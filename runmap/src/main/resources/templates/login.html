@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <!-- jQuery CDN   -->
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous">
+    </script>
+
+    <style>
+        :root {
+            --text-color: #f0f4f5;
+            --background-color: #263343;
+            --accent-color: #d49466;
+            --main-bg-color: #F7F2E0;
+            --sub-bg-color: #fffcf0;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Jeju Gothic";
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--background-color);
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 40vh;
+            background-color: var(--sub-bg-color);
+            border-radius: 35px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        input {
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin: 10px;
+
+        }
+
+        .center-container {
+            display: flow;
+            height: 15vh;
+            margin-top: 30px;
+        }
+
+
+        .btn-primary {
+            font-size: 15px;
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border-radius: 20px;
+            margin: 10px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #b86b3b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <form action="/member/login" method="post">
+        <h1>로그인</h1>
+        <div class="form-container">
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="text" name="memberEmail" placeholder="이메일을 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label>password</label>
+                <input type="password" name="memberPassword" placeholder="비밀번호를 입력해주세요">
+            </div>
+            <div class="center-container">
+                <input type="submit" value="로그인" class="btn-primary">
+                <a href="/" class="btn-primary">Home</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>

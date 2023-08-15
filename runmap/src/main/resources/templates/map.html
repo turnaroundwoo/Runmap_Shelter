@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map</title>
+    <!-- jQuery -->
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous">
+    </script>
+    <!--  fontawesome  -->
+    <script src="https://kit.fontawesome.com/680ef31bb9.js" crossorigin="anonymous"></script>
+
+    <style>
+        :root{
+            --text-color: #f0f4f5;
+            --background-color: #263343;
+            --accent-color: #d49466;
+            --main-bg-color: #F7F2E0;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: "Jeju Gothic";
+        }
+
+
+        a{
+            text-decoration: none;
+            color: var(--text-color)
+        }
+
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--background-color);
+            padding: 8px 12px;
+        }
+
+
+        .navbar__logo {
+            font-size: 24px;
+            color: var(--text-color)
+        }
+
+        .navbar__logo i {
+            color: var(--main-bg-color);
+        }
+
+        .navbar__menu {
+            display: flex;
+            list-style: none;
+            padding-left: 0;
+            font-size: 15px;
+        }
+
+        .navbar__menu li {
+            margin-top: 9px;
+            padding: 8px 12px;
+        }
+
+        .navbar__menu li:hover {
+            background-color: var(--accent-color);
+            border-radius: 20px;
+        }
+
+        .navbar__icons {
+            list-style: none;
+            color: var(--text-color);
+            display: flex;
+            padding-left: 0;
+        }
+
+        .navbar__icons li {
+            margin-top: 9px;
+            padding: 8px 12px;
+        }
+
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 8px 24px;
+            }
+
+            .navbar__menu {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .navbar__menu li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .navbar__icons {
+                justify-content: center;
+                width: 100%;
+            }
+
+        }
+
+        .center-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 90vh;
+            background-color: var(--main-bg-color);
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="navbar__logo">
+        <i class="fas fa-thin fa-person-running"></i>
+        <a href="">Shelter</a>
+    </div>
+
+    <ul class="navbar__menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/api/map">Map</a></li>
+    </ul>
+
+    <ul class="navbar__icons">
+        <li><i class="fa-brands fa-twitter"></i></li>
+        <li><i class="fa-brands fa-facebook-f"></i></li>
+    </ul>
+
+</nav>
+
+<div class="center-container">
+    <div id="map" style="width:1200px;height:700px;"></div>
+
+    <!-- Kakao API Key -->
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=KAKA0_API_KEY&libraries=clusterer"></script>
+
+    <script th:inline="javascript">
+
+
+    let markers = []; // 마커를 담을 배열
+
+    let container = document.getElementById('map'); // 지도를 표시할 div
+    let options = {
+        center: new kakao.maps.LatLng(37.504314652983645, 127.02367582168797), // 지도 중심 좌표
+        level: 12 // 지도 확대 레벨
+    };
+
+    let map = new kakao.maps.Map(container, options); // 지도 생성
+
+    let mapTypeControl = new kakao.maps.MapTypeControl(); // 지도타입 컨트롤 생성
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+    let zoomControl = new kakao.maps.ZoomControl(); // 줌 컨트롤 생성
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+    //============= 공공데이터 ==========
+
+    fetch("https://apis.data.go.kr/1741000/EmergencyAssemblyArea_Earthquake2/getArea1List?serviceKey=SHELTER_API_KEY&pageNo=1&numOfRows=1000&type=json")
+
+        // .then(response => response.json())
+        .then(response => {
+            if(!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            //console.log('여기부터', data)
+            //const tsunamiShelterArray = data?.EarthquakeOutdoorsShelter;
+            const EarthquakeOutdoorsShelterArray = data?.EarthquakeOutdoorsShelter;
+
+            //console.log('여기부터2', EarthquakeOutdoorsShelterArray)
+
+            if (!Array.isArray(EarthquakeOutdoorsShelterArray)) {
+                console.error('Data is not an array:', EarthquakeOutdoorsShelterArray);
+                throw new Error('Data is not an array.');
+            }
+
+            const rowArray = EarthquakeOutdoorsShelterArray[1]?.row;
+
+            if (!Array.isArray(rowArray)) {
+                console.error('row is not an array:', rowArray);
+                throw new Error('row is not an array.');
+            }
+
+            const getArea_location = rowArray.map(item => item?.vt_acmdfclty_nm); // 시설명
+            const getArea_address = rowArray.map(item => item?.dtl_adres); // 상세주소
+            const getArea_Lat = rowArray.map(item => item?.ycord); // 위도
+            const getArea_lon = rowArray.map(item => item?.xcord); // 경도
+
+            // console.log(getArea_location)
+            // console.log('Latitude:', getArea_Lat);
+            // console.log('Longitude:', getArea_lon);
+
+            let positions = getArea_Lat.map((lat, index) => ({
+                title: `대피장소명 : ${getArea_location[index]}` + '\n' + `주소: ${getArea_address[index]}`,
+                latlng: new kakao.maps.LatLng(lat, getArea_lon[index])
+            }));
+
+            //console.log(positions);
+
+            //======================
+            // 마커 이미지의 이미지 주소
+            let imageSrc = "/images/markerStar.png";
+
+            for (let i = 0; i < positions.length; i++) {
+                let imageSize = new kakao.maps.Size(24, 35); // 마커 이미지 크기
+                let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); // 마커 이미지 생성
+
+                let marker = new kakao.maps.Marker({ // 마커 생성
+                    map: map, // 마커를 표시할 지도
+
+
+                    position: positions[i].latlng, // 마커를 표시할 위치
+                    title : positions[i].title, // 마커의 타이틀(마커에 마우스를 올리면 타이틀 표시됨)
+                    //image : markerImage // 마커 이미지
+                });
+
+                markers.push(marker);
+            }
+
+            // ============= 마커 클러스터러 ==============
+            let clusterer = new kakao.maps.MarkerClusterer({
+                map: map, // 마커 클러스터러를 표시할 지도 객체
+                markers: markers, // 마커 배열
+                gridSize: 50, // 클러스터 사이즈
+                averageCenter: true, // 클러스터의 중앙 위치를 평균값으로 설정
+                minLevel: 6 // 클러스터를 최소 Level 6에서 생성
+            });
+
+            //======================
+
+        })
+        .catch(error => {
+            console.error('에러 발생', error);
+        });
+
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 목록</title>
+    <style>
+        body {
+            background-color: #F8F2F4;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        /*테이블 전체*/
+        table {
+            border-collapse: collapse;
+            width: 600px;
+            margin: 10px auto;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            background-color: white;
+        }
+
+        /* 테이블 행 */
+        th {
+            background-color: #1b1b1b;
+            color: #ddd;
+            padding: 20px;
+            /*text-align: left;*/
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        /*th {*/
+
+        /*}*/
+
+        /* 테이블 올렸을 때 */
+        tbody tr:hover {
+            color: #1b1b1b;
+            background-color: #f7e18a;
+            opacity: 0.8;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        /* 테이블 비율 */
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 30%;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 55%;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 30%;
+        }
+
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 30%;
+        }
+
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 30%;
+        }
+
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 30%;
+        }
+
+
+    </style>
+</head>
+<body>
+<h2>회원 목록</h2>
+<table>
+    <tr>
+        <th>id</th>
+        <th>memberEmail</th>
+        <th>memberPassword</th>
+        <th>memberName</th>
+        <th>상세조회</th>
+        <th>삭제</th>
+    </tr>
+    <tr th:each="member: ${memberList}">
+        <!--${변수이름.필드이름}-->
+        <td th:text="${member.id}"></td>
+        <td th:text="${member.memberEmail}"></td>
+        <td th:text="${member.memberPassword}"></td>
+        <td th:text="${member.memberName}"></td>
+        <td>
+            <!-- query string 방식 : 주소창 ~/member?id=1
+                rest api 방식 : 주소창 ~/member/1 -->
+            <!--  @{|   |}  : 타임리프에서 지원하는 문법, 서버에서 가져온 데이터를 같이 표현하고자 할 때 사용.
+                    | : 버티컬바  -->
+            <a th:href="@{|/member/${member.id}|}">조회</a>
+        </td>
+        <td>
+            <a th:href="@{|/member/delete/${member.id}|}">삭제</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

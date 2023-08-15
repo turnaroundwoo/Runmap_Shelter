@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회원정보수정</title>
+    <!-- jQuery -->
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous">
+    </script>
+
+    <style>
+        :root {
+            --text-color: #f0f4f5;
+            --background-color: #263343;
+            --accent-color: #d49466;
+            --main-bg-color: #F7F2E0;
+            --sub-bg-color: #fffcf0;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Jeju Gothic";
+        }
+
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--background-color);
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 40vh;
+            background-color: var(--sub-bg-color);
+            border-radius: 35px;
+        }
+
+
+
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        input {
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin: 10px;
+
+        }
+
+        .center-container {
+            display: flow;
+            height: 15vh;
+            margin-top: 30px;
+        }
+
+
+        .btn-primary {
+            font-size: 15px;
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border-radius: 20px;
+            margin: 10px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #b86b3b;
+        }
+    </style>
+
+
+</head>
+<body>
+<div class="container">
+    <form action="/member/update" method="post">
+        <!-- hidden : 클라이언트에게 해당 값이 안보이도록 설정   -->
+        <!-- readonly : 읽기 전용 (수정 불가)   -->
+        <!-- name="" : name 속성은 반드시 DTO 필드와 일치해야 함. 그래야 modal attribute를 사용할 수 있다 -->
+        <h1>내 정보 수정</h1>
+        <div class="form-container">
+            <div class="form-group">
+                <input type="hidden" th:value="${updateMember.id}" name="id">
+            </div>
+            <div class="form-group">
+                <label>E-mail</label>
+                <input type="text" th:value="${updateMember.memberEmail}" name="memberEmail" readonly>
+            </div>
+            <div class="form-group">
+                <label>password</label>
+                <input type="text" th:value="${updateMember.memberPassword}" name="memberPassword">
+            </div>
+            <div class="form-group">
+                <label>My Name</label>
+                <input type="text" th:value="${updateMember.memberName}" name="memberName">
+            </div>
+
+            <div class="center-container">
+                <input type="submit" value="정보수정" class="btn-primary" onclick="alert_box()">
+                <a href="/member/login" class="btn-primary">돌아가기</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script th:inline="javascript">
+
+    function alert_box(){
+        document.cookie = "loginEmail=" + encodeURIComponent("${session.loginEmail}") + "; path=/";
+
+        alert("회원 정보가 수정되었습니다.");
+        window.location.href="/member/login/"
+
+    }
+
+
+</script>
+
+
+</body>
+</html>

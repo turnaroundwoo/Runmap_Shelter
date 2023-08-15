@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>save</title>
+    <!-- jquery cdn을 넣어줘야만 제이쿼리 및 ajax를 쉽게 사용할 수 있음 -->
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous">
+    </script>
+    <!--  fontawesome  -->
+    <script src="https://kit.fontawesome.com/680ef31bb9.js" crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            --text-color: #f0f4f5;
+            --background-color: #263343;
+            --accent-color: #d49466;
+            --main-bg-color: #F7F2E0;
+            --sub-bg-color: #fffcf0;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Jeju Gothic";
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--background-color);
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 30vh;
+            border-radius: 35px;
+            background-color: var(--sub-bg-color);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 10px 20px 7px;
+            margin: 7px;
+            border-radius: 10px;
+        }
+
+        .center-container {
+            display: grid;
+            align-items: center;
+            text-align: center;
+            margin: 20px;
+        }
+
+
+        .btn-primary {
+            font-size: 15px;
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border-radius: 20px;
+            margin: 10px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #b86b3b;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+<!-- action속성: form에 작성한 데이터를 어디로 보낼지 지정 -->
+<form action="/member/save" method="post">
+    <h1>회원가입</h1>
+    <div class="form-container">
+    <!-- name속성: 서버로 전송할 때 변수이름의 역할, 중복 허용 -->
+    <!-- id속성 : 같은 이름의 id 중복 불가   -->
+    <!-- onkeyup="" : 이벤트 처리하는 속성으로, 키보드를 하나씩 입력할 때마다 해당 함수()를 호출할 수 있도록 처리  -->
+    <!--  onblur="" : 입력창을 다음입력창으로 이동하는 순간 호출하는 이벤트 처리 속성-->
+        <div class="form-group">
+            <label for="memberEmail">your E-mail</label>
+            <input type="text" name="memberEmail" id="memberEmail" placeholder="이메일을 입력해주세요" onblur="emailCheck()">
+            <!-- 검증 결과를 웹화면에 반영  -->
+            <p id="check-result"></p>
+        </div>
+        <div>
+            <label>password</label>
+            <input type="password" name="memberPassword" placeholder="비밀번호를 입력해주세요">
+        </div>
+        <div>
+            <label>your name</label>
+            <input type="text" name="memberName" placeholder="이름을 입력해주세요">
+        </div>
+    </div>
+    <div class="center-container">
+        <input type="submit" value="회원가입" class="btn-primary" onclick="alert_box()">
+        <a href="/" class="btn-primary">Home</a>
+    </div>
+
+</form>
+</div>
+
+<script th:inline="javascript">
+
+    function alert_box(){
+        const email = document.getElementById("memberEmail").value
+        if (email != "") {
+            alert("환영합니다. 가입이 완료되었습니다.");
+        } else {
+            alert("가입에 실패했습니다.");
+        }
+    };
+
+    const emailCheck = () => {
+        const email = document.getElementById("memberEmail").value; // 접근
+        const checkResult = document.getElementById("check-result"); //태그 요소에만 접근(value 빼기)
+        console.log("입력값: ", email);
+        $.ajax({
+            // 요청방식: post, url: "email-check", 데이터: 이메일
+            type: "post",
+            url: "/member/email-check",         // MemberController 97번
+            data: {
+                "memberEmail": email
+            },
+            success: function(res) {
+                console.log("요청성공", res);       //res : 응답 메시지 출력
+                if (res == "ok") {
+                    console.log("사용가능한 이메일");
+                    checkResult.style.color = "green"; //글자색 적용
+                    checkResult.innerHTML = "사용가능한 이메일";
+                } else {
+                    console.log("이미 사용중인 이메일");
+                    checkResult.style.color = "red";
+                    checkResult.innerHTML = "이미 사용중인 이메일";
+                }
+            },
+            error: function(err) {
+                console.log("에러발생", err);
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

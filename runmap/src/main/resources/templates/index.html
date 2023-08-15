@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <!-- jQuery -->
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous">
+    </script>
+    <!--  fontawesome  -->
+    <script src="https://kit.fontawesome.com/680ef31bb9.js" crossorigin="anonymous"></script>
+
+    <style>
+        /*root : 색상 관련 변수를 사용하여 한꺼번에 설정 가능*/
+        :root{
+            --text-color: #f0f4f5;
+            --background-color: #263343;
+            --accent-color: #d49466;
+            --main-bg-color: #F7F2E0;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: "Jeju Gothic";
+            height: 6000px;
+            background-color: var(--main-bg-color);
+        }
+
+        .center__text {
+            margin-top: 1000px;
+            color: #1b1b1b;
+            text-align: center;
+        }
+
+        a{
+            text-decoration: none;
+            color: var(--text-color)
+        }
+
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--background-color);
+            padding: 8px 12px;
+        }
+
+
+        .navbar__logo {
+            font-size: 24px;
+            color: var(--text-color)
+        }
+
+        .navbar__logo i {
+            color: var(--main-bg-color);
+        }
+
+        .navbar__menu {
+            display: flex;
+            list-style: none;
+            padding-left: 0;
+            font-size: 15px;
+        }
+
+        .navbar__menu li {
+            margin-top: 9px;
+            padding: 8px 12px;
+        }
+
+        .navbar__menu li:hover {
+            background-color: var(--accent-color);
+            border-radius: 20px;
+        }
+
+        .navbar__icons {
+            list-style: none;
+            color: var(--text-color);
+            display: flex;
+            padding-left: 0;
+        }
+
+        .navbar__icons li {
+            margin-top: 9px;
+            padding: 8px 12px;
+        }
+
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 8px 24px;
+            }
+
+            .navbar__menu {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .navbar__menu li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .navbar__icons {
+                justify-content: center;
+                width: 100%;
+            }
+
+        }
+
+        .center-container-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 80vh;
+            background-color: var(--main-bg-color);
+        }
+
+        .center-image {
+            max-width: 70%;
+            max-height: 450px;
+        }
+
+        .center-container-image i {
+            margin-top: 30px;
+        }
+
+
+        .center-container {
+            height: 6000px;
+            background-color: var(--main-bg-color);
+        }
+
+        .scroll-to-top-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .scroll-to-top-btn:hover {
+            background-color: #333;
+        }
+
+
+        .scroll-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            color: #1b1b1b;
+            font-size: 14px;
+        }
+
+        .center-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+
+
+        }
+
+
+        .center-button-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 30px 30px;
+        }
+
+        .center-button {
+            font-size: 17px;
+            padding: 10px 20px;
+            color: #1b1b1b;
+            border: 2px dashed #b77e4a;
+            border-radius: 20px;
+            margin: 10px;
+            font-weight: bold;
+        }
+
+        .center-button:hover {
+            background-color: #b77e4a;
+            border-radius: 20px;
+        }
+
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark">
+    <div class="navbar__logo">
+        <i class="fas fa-thin fa-person-running"></i>
+        <a href="">Shelter</a>
+    </div>
+
+    <ul class="navbar__menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/member/login">Login</a></li>
+        <li><a href="/member/save">Sign Up</a></li>
+    </ul>
+
+    <ul class="navbar__icons">
+        <li><i class="fa-brands fa-twitter"></i></li>
+        <li><i class="fa-brands fa-facebook-f"></i></li>
+    </ul>
+
+</nav>
+
+<div class="center-container-image">
+    <img src="/images/main.jpg" alt="Image" class="center-image">
+    <div class="scroll-text">
+        <i id="scroll-icon" class="fas fa-solid fa-circle-chevron-down" style="color: #afb4bb; font-size: 3em;"></i>
+        <span>scroll</span>
+    </div>
+
+</div>
+
+<div class="center-container">
+    <button id="scrollToTopBtn" class="scroll-to-top-btn">맨위로</button>
+
+    <div class="center__text"><h2>우리는 잠을 자던 중에 긴급재난문자를 받게 됩니다.</h2></div>
+    <div><img src="/images/message.jpg"></div>
+    <div class="center__text"><h2>급하게 대피를 해야 하는데 어디로 가야 할까요?</h2></div>
+    <div><img src="/images/sleep.png"></div>
+    <div class="center__text"><h2>우리는 지도를 통해 대피소 위치를 파악하여 대피할 수 있습니다.</h2></div>
+    <div><img src="/images/map.jpg" alt="Image"></div>
+    <div class="center-button-container">
+        <div><a class="center-button" href="/member/save">Sign Up</a></div>
+        <div><a class="center-button" href="/member/login">Login</a></div>
+    </div>
+
+</div>
+
+
+<script th:inline="javascript">
+    //클릭 이벤트 처리 후 스크롤 조작
+    document.addEventListener("DOMContentLoaded", function() {
+        const scrollIcon = document.getElementById("scroll-icon");
+
+        scrollIcon.addEventListener("click", function() {
+
+            // viewport 높이 --만큼 스크롤링 설정
+            const windowHeight = window.innerHeight;
+            const scrollHeight = 1.8 * windowHeight;
+
+            window.scrollBy({ top: scrollHeight, behavior: "smooth" });
+        });
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        window.addEventListener("scroll", function() {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        });
+
+        scrollToTopBtn.addEventListener("click", function() {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+    });
+
+
+</script>
+
+</body>
+</html>
